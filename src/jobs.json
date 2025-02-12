@@ -8,5 +8,10 @@
         "job_number": 2,
         "time_to_complete": 300,
         "time_completed": 0
+    },
+    {
+        "job_number": 3,
+        "time_to_complete": 400,
+        "time_completed": 0
     }
 ]
