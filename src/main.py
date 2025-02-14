@@ -16,8 +16,35 @@ args = parser.parse_args()
 
 #----------------------------------------------------------------------------------------------------------
 
-#define variables
+#function that automatically takes in the elements in the in put file and converts them into a list of objects
+def defineJobs(file_input):
+    #load json
+    with open(file_input) as json_file:
+        json_data = json.load(json_file)
 
+    job_list = []
+
+    #create a Job object for each element in json_data
+    for elem in range(len(json_data)):
+        temp = jobs.Job()
+        #use setters
+        temp.setIdentifier(json_data[elem-1]["identifier"])
+        temp.setState(json_data[elem-1]["state"])
+        temp.setPriority(json_data[elem-1]["priority"])
+        temp.setPc(json_data[elem-1]["pc"])
+        temp.setMemoryPointers(json_data[elem-1]["memory_pointers"])
+        temp.setContextData(json_data[elem-1]["context_data"])
+        temp.setIOStatusInfo(json_data[elem-1]["io_status_info"])
+        temp.setContext(json_data[elem-1]["context"])
+
+        job_list.append(temp)
+
+    return job_list
+
+#----------------------------------------------------------------------------------------------------------
+
+#set up variables
+my_jobs = []
 
 #----------------------------------------------------------------------------------------------------------
 # Define file input
@@ -28,4 +55,4 @@ else:
 # round robin scheduler code
 if args.roundrobin:
     from include import roundrobin
-    print("Round Robin enabled")
+    my_jobs = defineJobs(file_input)

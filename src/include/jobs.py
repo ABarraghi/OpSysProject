@@ -1,15 +1,15 @@
 # create a common class object for jobs
 
 class Job:
-    def __init__(self, identifier, state, priority, pc, memory_pointers, context_data, io_status_info, context):
-        self.__identifier = identifier
-        self.__state = state
-        self.__priority = priority
-        self.__pc = pc
-        self.__memory_pointers = memory_pointers
-        self.__context_data = context_data
-        self.__io_status_info = io_status_info
-        self.__context = context
+    def __init__(self):
+        self.__identifier = None
+        self.__state = None
+        self.__priority = None
+        self.__pc = None
+        self.__memory_pointers = None
+        self.__context_data = None
+        self.__io_status_info = None
+        self.__context = {}
 
     #setters
 
@@ -37,13 +37,29 @@ class Job:
     def setContext(self, context):
         self.__context = context
 
+    #setters for the context dictionary
+    def addCpuTimeCompleted(self, amount):
+        self.__context["cpu_time_completed"] += amount
+
+    def setTimeEnteredToQueue(self, time_entered_to_queue):
+        self.__context["time_entered_to_queue"] = time_entered_to_queue
+
+    def setTimeStartedOnCpu(self, time_started_on_cpu):
+        self.__context["time_started_on_cpu"] = time_started_on_cpu
+
+    def addToTimeSpentWaiting(self, time_spent_waiting):
+        self.__context["time_spent_waiting"] += time_spent_waiting
+
+    def setTimeCompleted(self, time_completed):
+        self.__context["time_completed"] = time_completed
+
     #getters
 
     def getIdentifier(self):
         return self.__identifier
 
     def getState(self):
-        return self.state
+        return self.__state
 
     def getPriority(self):
         return self.__priority
@@ -62,3 +78,23 @@ class Job:
 
     def getContext(self):
         return self.__context
+    
+    #getters for the context dictionary
+    def getCpuTimeCompleted(self):
+        return self.__context["cpu_time_completed"]
+
+    def getTimeEnteredToQueue(self):
+        return self.__context["time_entered_to_queue"]
+
+    def getTimeStartedOnCpu(self):
+        return self.__context["time_started_on_cpu"]
+
+    def getTimeSpentWaiting(self):
+        return self.__context["time_spent_waiting"]
+
+    def getTimeCompleted(self):
+        return self.__context["time_completed"]
+
+    #output to string
+    def toString(self):
+        print( str(self.__identifier) + ", " + str(self.__state) + ", " + str(self.__priority) + ", " + str(self.__pc) + ", " + str(self.__memory_pointers) + ", " + str(self.__context_data) + ", " + str(self.__io_status_info) + ", " + str(self.__context) )
