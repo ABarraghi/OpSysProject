@@ -3,7 +3,28 @@ import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 os.chdir(dir_path)
 
-job_list = [{"job_number": 1, "time_to_complete": 100, "time_completed": 0}]
+job_list = [
+            {"identifier": 1, "state": "not_running", "priority": 0, "pc": 0, "memory_pointers": 0, "context_data": 0, "io_status_info": 0,
+                "context": {
+                    "cpu_time_to_complete": 100, 
+                    "cpu_time_completed": 0, 
+                    "time_entered_to_queue": 0, 
+                    "time_started_on_cpu": 0, 
+                    "time_spent_waiting": 0, 
+                    "time_completed": 0
+                }
+             },
+             {"identifier": 2, "state": "not_running", "priority": 0, "pc": 0, "memory_pointers": 0, "context_data": 0, "io_status_info": 0,
+                "context": {
+                    "cpu_time_to_complete": 300, 
+                    "cpu_time_completed": 0, 
+                    "time_entered_to_queue": 0, 
+                    "time_started_on_cpu": 0, 
+                    "time_spent_waiting": 0, 
+                    "time_completed": 0
+                }
+             }
+            ]
 
 with open("jobs.json", "w") as file:
-    json.dump(job_list, file, indent=1)
+    json.dump(job_list, file, indent=4)

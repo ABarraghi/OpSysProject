@@ -1,4 +1,6 @@
 import argparse
+from include import definitions
+from include import jobs
 
 # Create an argparse object
 parser = argparse.ArgumentParser(description="Job scheduler simulator")
@@ -8,7 +10,7 @@ parser.add_argument("-R", "--roundrobin", action="store_true", help="Use the rou
 # parse args
 args = parser.parse_args()
 
-file_input = "jobs.json"
+file_input = "../res/jobs.json"
 
 # Define file input
 if args.input:

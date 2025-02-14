@@ -1,0 +1,1 @@
+# create a common class object for jobs
