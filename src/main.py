@@ -108,6 +108,9 @@ tester_four = LinkedList([
 ])
 tester_four.to_string()
 
+tester.set_node_at(2,Node(100))
+
+tester.to_string()
 print(tester.get_node_at(2))
 
 #print(tester.head)

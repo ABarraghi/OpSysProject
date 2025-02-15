@@ -33,7 +33,8 @@ class LinkedList:
             cur = cur.next
             counter = counter + 1
 
-    #Zero-indexed
+    #All of the following functions are zero-indexed
+
     def get_node_at(self,index):
 
         if((index > self.length) or (index < 0)):
@@ -47,3 +48,23 @@ class LinkedList:
             counter += 1
         
         return target_node
+
+    def set_node_at(self,index,node):
+
+        if((index > self.length) or (index < 0)):
+            raise IndexError("chosen index is out of bounds")
+
+        counter = 0
+        target_node = self.head
+
+        #stop at the node right before specified index
+        while(counter < (index-1)):
+            target_node = target_node.next
+            counter += 1
+        
+        #target_node is the node prior to the one inserted
+        #replaced_node is the node that will be overriden by this method
+        replaced_node = target_node.next
+        node.next = replaced_node.next
+        target_node.next = node
+
