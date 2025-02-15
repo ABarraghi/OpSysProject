@@ -4,6 +4,8 @@ import json
 #include necessary header files
 from include import definitions
 from include import jobs
+from include.linkedlist import linkedlist
+from include.node import Node
 
 #----------------------------------------------------------------------------------------------------------
 
@@ -56,3 +58,16 @@ else:
 if args.roundrobin:
     from include import roundrobin
     my_jobs = defineJobs(file_input)
+
+#----------------------------------------------------------------------------------------------------------
+#Testing LinkedList
+tester = linkedlist([1,2,3,4,5])
+tester.to_string()
+print(tester.head)
+
+secondtest = tester.head.next
+print(secondtest)
+
+
+testnode = Node(5)
+print(testnode)
