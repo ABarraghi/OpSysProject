@@ -10,6 +10,7 @@ class LinkedList:
     def __init__(self,nodeList):
 
         self.head = None
+        self.tail = None
         self.length = len(nodeList)
 
         if(self.length > 0):
@@ -19,6 +20,9 @@ class LinkedList:
             for i in range(1,len(nodeList)):
                 cur.next = Node(nodeList[i])
                 cur = cur.next
+            
+            self.tail = cur
+            
     
     #Go through the LL, starting from the head
     def to_string(self):
@@ -31,6 +35,12 @@ class LinkedList:
             print(f"Node #{counter} : ",cur)
             cur = cur.next
             counter = counter + 1
+
+    #Add node at the end of the LinkedList
+    def append(self,node):
+        self.tail.next = node
+        self.tail = node
+        self.length += 1
 
     #All of the following functions are zero-indexed
 
@@ -71,7 +81,7 @@ class LinkedList:
         return self.get_node_at(index).data
 
     def set_node_data_at(self,index,data):
-        
+
         if((index > self.length) or (index < 0)):
             raise IndexError("chosen index is out of bounds")
 

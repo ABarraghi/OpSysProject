@@ -117,6 +117,9 @@ tester.set_node_data_at(2,2)
 print(tester.get_node_data_at(2))
 print(tester.get_node_at(2))
 
+tester.append(Node(6))
+tester.to_string()
+
 #print(tester.head)
 
 #secondtest = tester.head.next
