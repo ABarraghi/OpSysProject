@@ -128,6 +128,10 @@ tester.to_string()
 tester.remove_last()
 tester.to_string()
 
+tester.insert_at(4,Node(5))
+tester.to_string()
+
+print(tester.tail)
 #print(tester.head)
 
 #secondtest = tester.head.next

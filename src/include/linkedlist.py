@@ -64,6 +64,38 @@ class LinkedList:
         cur.next = None
         self.tail = cur
         self.length -= 1
+    
+    #Add Node at a specified index
+    def insert_at(self,index,node):
+
+        if((index > self.length) or (index < 0)):
+            raise IndexError("chosen index is out of bounds")
+
+        counter = 0
+        target_node = self.head
+
+        #stop at the node right before specified index
+        while(counter < (index-1)):
+
+            target_node = target_node.next
+            counter += 1
+        
+        #target_node is the node prior to the one inserted
+        #after_node is the node after the one inserted
+        after_node = target_node.next
+        target_node.next = node
+        node.next = after_node
+
+        self.length += 1
+
+        #update head and tail as needed
+        if(index == 0):
+            self.head = node
+
+        if(index == (self.length-1)):
+            self.tail = node
+
+        
 
     #All of the following functions are zero-indexed
 
