@@ -6,22 +6,20 @@ from include.node import Node
 
 class LinkedList:
 
-    head = None
-    length = 0
-
     #intitalizing by an array of Nodes
     #Assuming a non-zero LL size
     def __init__(self,nodeList):
 
-        self.head = Node(nodeList[0])
-        cur = self.head
+        self.head = None
+        self.length = len(nodeList)
 
-        self.length = 1
+        if(self.length > 0):
+            self.head = Node(nodeList[0])
+            cur = self.head
 
-        for i in range(1,len(nodeList)):
-            cur.next = Node(nodeList[i])
-            cur = cur.next
-            self.length += 1
+            for i in range(1,len(nodeList)):
+                cur.next = Node(nodeList[i])
+                cur = cur.next
 
     
     #Go through the LL, starting from the head
