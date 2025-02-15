@@ -4,7 +4,7 @@ import json
 #include necessary header files
 from include import definitions
 from include import jobs
-from include.linkedlist import linkedlist
+from include.linkedlist import LinkedList
 from include.node import Node
 
 #----------------------------------------------------------------------------------------------------------
@@ -61,13 +61,17 @@ if args.roundrobin:
 
 #----------------------------------------------------------------------------------------------------------
 #Testing LinkedList
-tester = linkedlist([1,2,3,4,5])
+tester = LinkedList([1,2,3,4,5])
 tester.to_string()
-print(tester.head)
 
-secondtest = tester.head.next
-print(secondtest)
+tester_two = LinkedList([1])
+tester_two.to_string()
+
+#print(tester.head)
+
+#secondtest = tester.head.next
+#print(secondtest)
 
 
-testnode = Node(5)
-print(testnode)
+#testnode = Node(5)
+#print(testnode)

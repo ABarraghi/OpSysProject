@@ -4,24 +4,29 @@
 #Last modified Feb 14 2025
 from include.node import Node
 
-class linkedlist:
+class LinkedList:
 
     head = None
+    length = 0
 
     #intitalizing by an array of Nodes
-    #Assuming a non-zero size of LL
+    #Assuming a non-zero LL size
     def __init__(self,nodeList):
 
         self.head = Node(nodeList[0])
         cur = self.head
-        counter = 0
 
-        for element in range(len(nodeList)):
-            cur.next = Node(element)
+        self.length = 1
+
+        for i in range(1,len(nodeList)):
+            cur.next = Node(nodeList[i])
             cur = cur.next
+            self.length += 1
+
     
     #Go through the LL, starting from the head
     def to_string(self):
+        print(f"LinkedList of size : {self.length}")
         cur = self.head
 
         counter = 1
