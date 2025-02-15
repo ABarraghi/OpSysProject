@@ -132,6 +132,9 @@ tester.insert_at(4,Node(5))
 tester.to_string()
 
 print(tester.tail)
+
+tester.remove_at(4)
+tester.to_string()
 #print(tester.head)
 
 #secondtest = tester.head.next

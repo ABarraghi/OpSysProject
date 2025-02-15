@@ -95,7 +95,36 @@ class LinkedList:
         if(index == (self.length-1)):
             self.tail = node
 
-        
+    #Remove Node at a specified index
+    def remove_at(self,index):
+
+        if((index > self.length) or (index < 0)):
+            raise IndexError("chosen index is out of bounds")
+
+        counter = 0
+        target_node = self.head
+
+        #simply update head or tail, if they are the ones to be deleted
+        if(index == 0):
+            self.head = target_node.next
+
+        elif(index == (self.length-1)):
+            self.remove_last()
+            
+        else: 
+            #stop at the node right before specified index
+            while(counter < (index-1)):
+
+                target_node = target_node.next
+                counter += 1
+            
+            #target_node is the node prior to the one deleted
+            #after_node is the node after the one deleted
+            after_node = target_node.next.next
+            target_node.next = after_node
+
+        self.length -= 1
+
 
     #All of the following functions are zero-indexed
 
