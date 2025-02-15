@@ -19,7 +19,6 @@ class LinkedList:
             for i in range(1,len(nodeList)):
                 cur.next = Node(nodeList[i])
                 cur = cur.next
-
     
     #Go through the LL, starting from the head
     def to_string(self):
@@ -67,4 +66,24 @@ class LinkedList:
         replaced_node = target_node.next
         node.next = replaced_node.next
         target_node.next = node
+
+    def get_node_data_at(self,index):
+        return self.get_node_at(index).data
+
+    def set_node_data_at(self,index,data):
+        
+        if((index > self.length) or (index < 0)):
+            raise IndexError("chosen index is out of bounds")
+
+        counter = 0
+        target_node = self.head
+
+        #stop at the node right before specified index
+        while(counter < (index-1)):
+            target_node = target_node.next
+            counter += 1
+        
+        target_node.next.data = data
+        
+
 

@@ -113,6 +113,10 @@ tester.set_node_at(2,Node(100))
 tester.to_string()
 print(tester.get_node_at(2))
 
+tester.set_node_data_at(2,2)
+print(tester.get_node_data_at(2))
+print(tester.get_node_at(2))
+
 #print(tester.head)
 
 #secondtest = tester.head.next
