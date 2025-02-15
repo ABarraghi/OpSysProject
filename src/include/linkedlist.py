@@ -1,13 +1,12 @@
 #LinkedList.py
 #A singly-linked LinkedList data structure for general objects
 #First created Feb 14 2025
-#Last modified Feb 14 2025
+#Last modified Feb 15 2025
 from include.node import Node
 
 class LinkedList:
 
-    #intitalizing by an array of Nodes
-    #Assuming a non-zero LL size
+    #Intitalizing by an array of Nodes
     def __init__(self,nodeList):
 
         self.head = None
@@ -34,10 +33,13 @@ class LinkedList:
             cur = cur.next
             counter = counter + 1
 
+    #Zero-indexed
+    def get_node_at(self,index):
+        counter = 0
+        target_node = self.head
 
-
-    
-
-
-
-
+        while(counter < index):
+            target_node = target_node.next
+            counter += 1
+        
+        return target_node
