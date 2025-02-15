@@ -120,6 +120,14 @@ print(tester.get_node_at(2))
 tester.append(Node(6))
 tester.to_string()
 
+print(tester.length)
+
+tester.remove_last()
+tester.to_string()
+
+tester.remove_last()
+tester.to_string()
+
 #print(tester.head)
 
 #secondtest = tester.head.next

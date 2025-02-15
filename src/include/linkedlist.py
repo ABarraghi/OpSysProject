@@ -14,10 +14,12 @@ class LinkedList:
         self.length = len(nodeList)
 
         if(self.length > 0):
+
             self.head = Node(nodeList[0])
             cur = self.head
 
             for i in range(1,len(nodeList)):
+
                 cur.next = Node(nodeList[i])
                 cur = cur.next
             
@@ -26,21 +28,42 @@ class LinkedList:
     
     #Go through the LL, starting from the head
     def to_string(self):
+
         print(f"LinkedList of size : {self.length}")
         cur = self.head
 
         counter = 1
 
         while cur is not None:
+
             print(f"Node #{counter} : ",cur)
             cur = cur.next
             counter = counter + 1
 
-    #Add node at the end of the LinkedList
+    #Add Node at the end of the LinkedList
     def append(self,node):
+
         self.tail.next = node
         self.tail = node
         self.length += 1
+
+    #Remove Node at the end of the LinkedList
+    def remove_last(self):
+
+        counter = 0
+        cur = self.head
+        
+        if(self.length == 0):
+            raise IndexError("attempted removal on empty linked list")
+
+        while(counter < (self.length-2)):
+
+            cur = cur.next
+            counter += 1
+
+        cur.next = None
+        self.tail = cur
+        self.length -= 1
 
     #All of the following functions are zero-indexed
 
@@ -53,6 +76,7 @@ class LinkedList:
         target_node = self.head
 
         while(counter < index):
+
             target_node = target_node.next
             counter += 1
         
@@ -68,6 +92,7 @@ class LinkedList:
 
         #stop at the node right before specified index
         while(counter < (index-1)):
+
             target_node = target_node.next
             counter += 1
         
@@ -78,6 +103,7 @@ class LinkedList:
         target_node.next = node
 
     def get_node_data_at(self,index):
+
         return self.get_node_at(index).data
 
     def set_node_data_at(self,index,data):
@@ -90,6 +116,7 @@ class LinkedList:
 
         #stop at the node right before specified index
         while(counter < (index-1)):
+
             target_node = target_node.next
             counter += 1
         
