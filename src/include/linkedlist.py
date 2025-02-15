@@ -35,6 +35,10 @@ class LinkedList:
 
     #Zero-indexed
     def get_node_at(self,index):
+
+        if((index > self.length) or (index < 0)):
+            raise IndexError("chosen index is out of bounds")
+
         counter = 0
         target_node = self.head
 
