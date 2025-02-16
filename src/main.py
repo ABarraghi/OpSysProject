@@ -149,10 +149,10 @@ TIMER: {job_list.get_node_data_at(my_iter).getCpuTimeCompleted() +  temp_timer2}
             #print("Updated my_iter: " + str(my_iter))
     except KeyboardInterrupt: #if ctrl+c is pressed
         #dump job information to log.json
-        for job in my_jobs:
-            dump_list.append(job.toDict())
-
-            temp = json.dumps(dump_list, indent=4)
+        dump_list = []
+        #turn job_list job objects into dicts and send that to dump_list, 
+        for i in range(job_list.get_length()):
+            dump_list.append(job_list.get_node_data_at(i).toDict())
 
         with open("log.json", "w") as log:
             json.dump(dump_list, log, indent=4)
