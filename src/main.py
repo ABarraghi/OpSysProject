@@ -20,8 +20,19 @@ parser.add_argument("-I", "--input", type=str, help="Use a specific json job fil
 parser.add_argument("-R", "--roundrobin", action="store_true", help="Use the round robin job scheduler")
 parser.add_argument("--realtime", action="store_true", help="Run the program in real time")
 parser.add_argument("-T", "--test", action="store_true", help="Run the test code in the program")
+
 # parse args
 args = parser.parse_args()
+
+#check arguments
+if (not os.path.exists(args.input)): #if input file does not exist
+    parser.error("--input file does not exist")
+elif (not args.input.lower().endswith(".json")) : #if filename is not json
+    parser.error("The program only accepts json file types")
+if args.roundrobin == False: #if no job scheduler is picked
+    parser.error("The program requires a job scheduler to run")
+if (args.realtime and (args.roundrobin == False)): #if --realtime is used without a job scheduler
+    parser.error("The --realtime argument requires a job scheduler")
 
 #----------------------------------------------------------------------------------------------------------
 
