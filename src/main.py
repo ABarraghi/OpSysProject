@@ -1,5 +1,7 @@
 import time
 import os
+import sys
+
 import argparse
 import json
 
@@ -109,7 +111,8 @@ if args.roundrobin:
                         os.system('cls' if os.name == 'nt' else 'clear')
                         print(f"""
 GLOBAL TIME: {global_timer + temp_timer}
-JOB NUMBER: {job_list.get_node_data_at(my_iter).getIdentifier()} : {job_list.get_node_data_at(my_iter).getCpuTimeCompleted() +  temp_timer2} / {job_list.get_node_data_at(my_iter).getCpuTimeToComplete()} 
+JOB NUMBER: {job_list.get_node_data_at(my_iter).getIdentifier()}
+TIMER: {job_list.get_node_data_at(my_iter).getCpuTimeCompleted() +  temp_timer2} / {job_list.get_node_data_at(my_iter).getCpuTimeToComplete()} 
 """, end='\r')
                         #prepare for next second
                         time.sleep(1)
@@ -153,7 +156,8 @@ JOB NUMBER: {job_list.get_node_data_at(my_iter).getIdentifier()} : {job_list.get
 
         with open("log.json", "w") as log:
             json.dump(dump_list, log, indent=4)
-        print("SIMULATION INTERRUPTED, CURRENT DATA WRITTEN TO LOG.JSON.")
+        print("SIMULATION INTERRUPTED, CURRENT DATA WRITTEN TO LOG.JSON. EXITING PROGRAM...")
+        sys.exit()
 
 
     #dump job information to log.json if program completes
@@ -163,7 +167,8 @@ JOB NUMBER: {job_list.get_node_data_at(my_iter).getIdentifier()} : {job_list.get
     temp = json.dumps(dump_list, indent=4)
     with open("log.json", "w") as log:
         json.dump(dump_list, log, indent=4)
-    print("SIMULATION COMPLETED, CURRENT DATA WRITTEN TO LOG.JSON.")
+    print("SIMULATION COMPLETED, CURRENT DATA WRITTEN TO LOG.JSON. EXITING PROGRAM...")
+    sys.exit()
         
 #----------------------------------------------------------------------------------------------------------
 if args.test:
