@@ -107,13 +107,18 @@ if args.roundrobin:
                     temp_timer = 0 #tracks both definitions of time
                     temp_timer2 = 0 #tracks only TIME_UNIT
                     
-                    while(temp_timer <= (definitions.TIME_UNIT + definitions.CST)):
+                    temp = definitions.CST
+                    if (job_list.get_length() == 1):    #if there is only one job in queue, don't add CST
+                        temp = 0
+
+                    while(temp_timer <= (definitions.TIME_UNIT + temp)):
 
                         os.system('cls' if os.name == 'nt' else 'clear')
                         print(f"""
 GLOBAL TIME: {global_timer + temp_timer}
 JOB NUMBER: {job_list.get_node_data_at(my_iter).getIdentifier()}
-TIMER: {job_list.get_node_data_at(my_iter).getCpuTimeCompleted() +  temp_timer2} / {job_list.get_node_data_at(my_iter).getCpuTimeToComplete()} 
+TIMER: {job_list.get_node_data_at(my_iter).getCpuTimeCompleted() +  temp_timer2} / {job_list.get_node_data_at(my_iter).getCpuTimeToComplete()}
+TIME SPENT WAITING: {job_list.get_node_data_at(my_iter).getTimeSpentWaiting()}
 """, end='\r')
                         #prepare for next second
                         time.sleep(1)
@@ -131,11 +136,13 @@ TIMER: {job_list.get_node_data_at(my_iter).getCpuTimeCompleted() +  temp_timer2}
 
                 #global timer
                 global_timer += definitions.TIME_UNIT
-                global_timer += definitions.CST
+                if (job_list.get_length() != 1):    #if there is only one job in queue, don't add CST
+                    global_timer += definitions.CST
 
                 #job timers
                 job_list.get_node_data_at(my_iter).addCpuTimeCompleted(definitions.TIME_UNIT)
-                job_list.get_node_data_at(my_iter).addToTimeSpentWaiting(definitions.CST)
+                if (job_list.get_length() != 1):    #if there is only one job in queue, don't add CST
+                    job_list.get_node_data_at(my_iter).addToTimeSpentWaiting(definitions.CST)
 
                 #set to not running
                 job_list.get_node_data_at(my_iter).setState("not_running")
