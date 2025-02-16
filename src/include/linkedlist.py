@@ -183,5 +183,6 @@ class LinkedList:
         
         target_node.next.data = data
         
-
-
+    #get length of linked list
+    def get_length(self):
+        return self.length
