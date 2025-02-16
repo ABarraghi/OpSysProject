@@ -25,9 +25,9 @@ parser.add_argument("-T", "--test", action="store_true", help="Run the test code
 args = parser.parse_args()
 
 #check arguments
-if (not os.path.exists(args.input)): #if input file does not exist
+if (args.input and (not os.path.exists(args.input)) ): #if input file does not exist
     parser.error("--input file does not exist")
-elif (not args.input.lower().endswith(".json")) : #if filename is not json
+elif (args.input and (not args.input.lower().endswith(".json"))) : #if filename is not json
     parser.error("The program only accepts json file types")
 if args.roundrobin == False: #if no job scheduler is picked
     parser.error("The program requires a job scheduler to run")
