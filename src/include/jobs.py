@@ -63,7 +63,7 @@ class Job:
     #getters
 
     def getIdentifier(self):
-        return self.__identifier
+        return int(self.__identifier)
 
     def getState(self):
         return self.__state

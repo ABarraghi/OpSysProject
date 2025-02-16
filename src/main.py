@@ -75,14 +75,23 @@ if args.roundrobin:
     my_jobs = []
 
     #while loop that completes each job one by one
-    while (job_list.get_length() != 0):
+    while (job_list.get_length() > 0):
+        #debugging
+        print(job_list.get_length())
 
         #check if job is completed. if true, remove job off the job list (skip it) and declare the global time completed
         if (job_list.get_node_data_at(my_iter).getCpuTimeCompleted() >= job_list.get_node_data_at(my_iter).getCpuTimeToComplete() ):
             job_list.get_node_data_at(my_iter).setTimeCompleted(global_timer)
+            
+            #debugging
+            #print(job_list.get_node_data_at(my_iter).toDict())
+
             #add my_iter to completed jobs
-            dump_list.append(job_list.get_node_data_at(my_iter))
+            dump_list.append(job_list.get_node_data_at(my_iter).toDict())
             job_list.remove_at(my_iter)
+
+
+            skip_bool = True
 
         if (skip_bool == False):
             #set to running
@@ -105,21 +114,25 @@ if args.roundrobin:
             #set to not running
             job_list.get_node_data_at(my_iter).setState("not_running")
 
+            
             #debugging
-            print( isinstance( job_list.get_node_data_at(my_iter).getCpuTimeToComplete() , int ) )
-            print("Length: " + str(job_list.get_length()))
-            print("Iterator: " + str(my_iter))
-            print("Time completed: " + str(job_list.get_node_data_at(my_iter).getCpuTimeCompleted()))
-            print("Time to complete: " + str(job_list.get_node_data_at(my_iter).getCpuTimeToComplete()) + "\n")
+            if(job_list.get_node_data_at(my_iter).getIdentifier()==3):
+                print("Global time: " + str(global_timer))
+                print("Length: " + str(job_list.get_length()))
+                print("Iterator: " + str(my_iter))
+                print("Time completed: " + str(job_list.get_node_data_at(my_iter).getCpuTimeCompleted()))
+                print("Time to complete: " + str(job_list.get_node_data_at(my_iter).getCpuTimeToComplete()) + "\n")
+            
 
         skip_bool = False
 
         #go on to the next job
         my_iter += 1
-        if (my_iter > (job_list.get_length())):
+        if (my_iter > (job_list.get_length() - 1)):
             my_iter = 0
         if (job_list.get_length() == 1):
             my_iter = 0 
+        #print("Updated my_iter: " + str(my_iter))
 
     '''
     my_iter = 0
@@ -127,7 +140,8 @@ if args.roundrobin:
     for i in range(job_list.get_length()):
         my_jobs.append(job_list.get_node_data_at(my_iter % job_list.get_length()))
         my_iter += 1
-
+    '''
+        
     #dump job information to log.json
     for job in my_jobs:
         dump_list.append(job.toDict())
@@ -136,7 +150,7 @@ if args.roundrobin:
 
     with open("log.json", "w") as log:
         json.dump(dump_list, log, indent=4)
-    '''
+
         
 #----------------------------------------------------------------------------------------------------------
 if args.test:
