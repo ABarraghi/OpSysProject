@@ -138,14 +138,6 @@ if args.roundrobin:
             my_iter = 0 
         #print("Updated my_iter: " + str(my_iter))
 
-    '''
-    my_iter = 0
-    #send the LinkedList data back to my_jobs
-    for i in range(job_list.get_length()):
-        my_jobs.append(job_list.get_node_data_at(my_iter % job_list.get_length()))
-        my_iter += 1
-    '''
-        
     #dump job information to log.json
     for job in my_jobs:
         dump_list.append(job.toDict())
