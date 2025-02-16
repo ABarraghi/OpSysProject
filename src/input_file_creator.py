@@ -4,7 +4,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 os.chdir(dir_path)
 
 job_list = [
-            {"identifier": 1, "state": "not_running", "priority": 0, "pc": 0, "memory_pointers": 0, "context_data": 0, "io_status_info": 0,
+            {"identifier": 1, "state": "not_running", "priority": 0, "pc": 0, "memory_pointers": 0, "context_data": 0, "io_status_info": 0, "global_timer": 0,
                 "context": {
                     "cpu_time_to_complete": 100, 
                     "cpu_time_completed": 0, 
@@ -14,7 +14,7 @@ job_list = [
                     "time_completed": 0
                 }
              },
-             {"identifier": 2, "state": "not_running", "priority": 0, "pc": 0, "memory_pointers": 0, "context_data": 0, "io_status_info": 0,
+             {"identifier": 2, "state": "not_running", "priority": 0, "pc": 0, "memory_pointers": 0, "context_data": 0, "io_status_info": 0, "global_timer": 0,
                 "context": {
                     "cpu_time_to_complete": 300, 
                     "cpu_time_completed": 0, 

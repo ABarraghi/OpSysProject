@@ -7,6 +7,7 @@
         "memory_pointers": 0,
         "context_data": 0,
         "io_status_info": 0,
+        "global_timer": 0,
         "context": {
             "cpu_time_to_complete": 100,
             "cpu_time_completed": 0,
@@ -24,6 +25,7 @@
         "memory_pointers": 0,
         "context_data": 0,
         "io_status_info": 0,
+        "global_timer": 0,
         "context": {
             "cpu_time_to_complete": 300,
             "cpu_time_completed": 0,

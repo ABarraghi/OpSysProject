@@ -9,6 +9,7 @@ class Job:
         self.__memory_pointers = None
         self.__context_data = None
         self.__io_status_info = None
+        self.__global_timer = 0
         self.__context = {}
 
     #setters
@@ -33,6 +34,9 @@ class Job:
 
     def setIOStatusInfo(self, io_status_info):
         self.__io_status_info = io_status_info
+
+    def setGlobalTimer(self, global_timer):
+        self.__global_timer = global_timer
 
     def setContext(self, context):
         self.__context = context
@@ -83,6 +87,9 @@ class Job:
     def getIOStatusInfo(self):
         return self.__io_status_info
 
+    def getGlobalTimer(self):
+        return int(self.__global_timer)
+
     def getContext(self):
         return self.__context
     
@@ -117,4 +124,5 @@ class Job:
                 "memory_pointers" : self.__memory_pointers,
                 "context_data" : self.__context_data,
                 "io_status_info" : self.__io_status_info,
+                "global_timer" : self.__global_timer,
                 "context" : self.__context}

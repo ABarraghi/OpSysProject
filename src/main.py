@@ -44,6 +44,7 @@ def defineJobs(file_input):
         temp.setMemoryPointers(json_data[elem-1]["memory_pointers"])
         temp.setContextData(json_data[elem-1]["context_data"])
         temp.setIOStatusInfo(json_data[elem-1]["io_status_info"])
+        temp.setGlobalTimer(json_data[elem-1]["global_timer"])
         temp.setContext(json_data[elem-1]["context"])
 
         job_list.append(temp)
@@ -51,9 +52,6 @@ def defineJobs(file_input):
     return job_list
 
 #----------------------------------------------------------------------------------------------------------
-
-#set up variables
-global_timer = 0
 
 my_jobs = []
 dump_list = []
@@ -80,6 +78,9 @@ if args.roundrobin:
     #start the LinkedList
     job_list = LinkedList(my_jobs)
     my_jobs = []
+
+    #define global timer
+    global_timer = job_list.get_node_data_at(0).getGlobalTimer()
 
     try:
         #while loop that completes each job one by one
@@ -138,6 +139,10 @@ TIMER: {job_list.get_node_data_at(my_iter).getCpuTimeCompleted() +  temp_timer2}
 
                 #set to not running
                 job_list.get_node_data_at(my_iter).setState("not_running")
+
+                #update global timer in Job object
+                for i in range(job_list.get_length()):
+                    job_list.get_node_data_at(i).setGlobalTimer(global_timer)
             skip_bool = False
 
             #go on to the next job
