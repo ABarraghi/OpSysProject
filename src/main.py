@@ -1,5 +1,8 @@
+import time
+import os
 import argparse
 import json
+
 
 #include necessary header files
 from include import definitions
@@ -13,6 +16,7 @@ from include.node import Node
 parser = argparse.ArgumentParser(description="Job scheduler simulator")
 parser.add_argument("-I", "--input", type=str, help="Use a specific json job file, default is jobs.json")
 parser.add_argument("-R", "--roundrobin", action="store_true", help="Use the round robin job scheduler")
+parser.add_argument("--realtime", action="store_true", help="Run the program in real time")
 parser.add_argument("-T", "--test", action="store_true", help="Run the test code in the program")
 # parse args
 args = parser.parse_args()
@@ -58,7 +62,6 @@ skip_bool = False
 
 temp = None
 
-
 #----------------------------------------------------------------------------------------------------------
 # Define file input
 if args.input:
@@ -76,77 +79,91 @@ if args.roundrobin:
     job_list = LinkedList(my_jobs)
     my_jobs = []
 
-    #while loop that completes each job one by one
-    while (job_list.get_length() > 0):
-        #debugging
-        #print(job_list.get_length())
-
-        #check if job is completed. if true, remove job off the job list (skip it) and declare the global time completed
-        if (job_list.get_node_data_at(my_iter).getCpuTimeCompleted() >= job_list.get_node_data_at(my_iter).getCpuTimeToComplete() ):
-            job_list.get_node_data_at(my_iter).setTimeCompleted(global_timer)
-            
+    try:
+        #while loop that completes each job one by one
+        while (job_list.get_length() > 0):
             #debugging
-            print(job_list.to_string())
+            #print(job_list.get_length())
 
-            #add my_iter to completed jobs
-            dump_list.append(job_list.get_node_data_at(my_iter).toDict())
-            job_list.remove_at(my_iter)
+            #check if job is completed. if true, remove job off the job list (skip it) and declare the global time completed
+            if (job_list.get_node_data_at(my_iter).getCpuTimeCompleted() >= job_list.get_node_data_at(my_iter).getCpuTimeToComplete() ):
+                job_list.get_node_data_at(my_iter).setTimeCompleted(global_timer)
 
-            #debugging
-            print(job_list.to_string())
+                #add my_iter to completed jobs
+                dump_list.append(job_list.get_node_data_at(my_iter).toDict())
+                job_list.remove_at(my_iter)
 
-            skip_bool = True
+                skip_bool = True
 
-        if (skip_bool == False):
-            #set to running
-            job_list.get_node_data_at(my_iter).setState("running")
+            if (skip_bool == False):
+                #set to running
+                job_list.get_node_data_at(my_iter).setState("running")
 
-            #add CST and TIME_UNIT to global_timer and add TIME_UNIT to job_list.get_node_data_at()
-            if(job_list.get_node_data_at(my_iter).getTimeEnteredToQueue() == 0):
-                job_list.get_node_data_at(my_iter).setTimeEnteredToQueue(global_timer)
-            if(job_list.get_node_data_at(my_iter).getTimeStartedOnCpu() == 0):
-                job_list.get_node_data_at(my_iter).setTimeStartedOnCpu(global_timer)
+                #simulate realtime console
+                if args.realtime:
+                    temp_timer = 0 #tracks both definitions of time
+                    temp_timer2 = 0 #tracks only TIME_UNIT
+                    
+                    while(temp_timer <= (definitions.TIME_UNIT + definitions.CST)):
 
-            #global timer
-            global_timer += definitions.TIME_UNIT
-            global_timer += definitions.CST
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        print(f"""
+GLOBAL TIME: {global_timer + temp_timer}
+JOB NUMBER: {job_list.get_node_data_at(my_iter).getIdentifier()} : {job_list.get_node_data_at(my_iter).getCpuTimeCompleted() +  temp_timer2} / {job_list.get_node_data_at(my_iter).getCpuTimeToComplete()} 
+""", end='\r')
+                        #prepare for next second
+                        time.sleep(1)
+                        temp_timer += 1
+                        if (temp_timer2 + 1 <= definitions.TIME_UNIT):
+                            temp_timer2 += 1
+                temp_timer = 0
+                temp_timer2 = 0
 
-            #job timers
-            job_list.get_node_data_at(my_iter).addCpuTimeCompleted(definitions.TIME_UNIT)
-            job_list.get_node_data_at(my_iter).addToTimeSpentWaiting(definitions.CST)
+                #add CST and TIME_UNIT to global_timer and add TIME_UNIT to job_list.get_node_data_at()
+                if(job_list.get_node_data_at(my_iter).getTimeEnteredToQueue() == 0):
+                    job_list.get_node_data_at(my_iter).setTimeEnteredToQueue(global_timer)
+                if(job_list.get_node_data_at(my_iter).getTimeStartedOnCpu() == 0):
+                    job_list.get_node_data_at(my_iter).setTimeStartedOnCpu(global_timer)
 
-            #set to not running
-            job_list.get_node_data_at(my_iter).setState("not_running")
+                #global timer
+                global_timer += definitions.TIME_UNIT
+                global_timer += definitions.CST
 
-            
-            #debugging
-            if(job_list.get_node_data_at(my_iter).getIdentifier() in [1,2]):
-                print("Global time: " + str(global_timer))
-                print("Length: " + str(job_list.get_length()))
-                print("Iterator: " + str(my_iter))
-                print("Time completed: " + str(job_list.get_node_data_at(my_iter).getCpuTimeCompleted()))
-                print("Time to complete: " + str(job_list.get_node_data_at(my_iter).getCpuTimeToComplete()) + "\n")
-            
+                #job timers
+                job_list.get_node_data_at(my_iter).addCpuTimeCompleted(definitions.TIME_UNIT)
+                job_list.get_node_data_at(my_iter).addToTimeSpentWaiting(definitions.CST)
 
-        skip_bool = False
+                #set to not running
+                job_list.get_node_data_at(my_iter).setState("not_running")
+            skip_bool = False
 
-        #go on to the next job
-        my_iter += 1
-        if (my_iter > (job_list.get_length() - 1)):
-            my_iter = 0
-        if (job_list.get_length() == 1):
-            my_iter = 0 
-        #print("Updated my_iter: " + str(my_iter))
+            #go on to the next job
+            my_iter += 1
+            if (my_iter > (job_list.get_length() - 1)):
+                my_iter = 0
+            if (job_list.get_length() == 1):
+                my_iter = 0 
+            #print("Updated my_iter: " + str(my_iter))
+    except KeyboardInterrupt: #if ctrl+c is pressed
+        #dump job information to log.json
+        for job in my_jobs:
+            dump_list.append(job.toDict())
 
-    #dump job information to log.json
+            temp = json.dumps(dump_list, indent=4)
+
+        with open("log.json", "w") as log:
+            json.dump(dump_list, log, indent=4)
+        print("SIMULATION INTERRUPTED, CURRENT DATA WRITTEN TO LOG.JSON.")
+
+
+    #dump job information to log.json if program completes
     for job in my_jobs:
         dump_list.append(job.toDict())
 
     temp = json.dumps(dump_list, indent=4)
-
     with open("log.json", "w") as log:
         json.dump(dump_list, log, indent=4)
-
+    print("SIMULATION COMPLETED, CURRENT DATA WRITTEN TO LOG.JSON.")
         
 #----------------------------------------------------------------------------------------------------------
 if args.test:
