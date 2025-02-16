@@ -63,7 +63,10 @@ class LinkedList:
 
         cur.next = None
         self.tail = cur
-        self.length -= 1
+
+        #fix to self.length going down twice on remove_at
+        if (self.length != 2):
+            self.length -= 1
     
     #Add Node at a specified index
     def insert_at(self,index,node):
@@ -98,7 +101,7 @@ class LinkedList:
     #Remove Node at a specified index
     def remove_at(self,index):
 
-        if((index > self.length) or (index < 0)):
+        if((index > self.length - 1) or (index < 0)):
             raise IndexError("chosen index is out of bounds")
 
         counter = 0

@@ -107,7 +107,7 @@ class Job:
 
     #output to string
     def toString(self):
-        print( str(self.__identifier) + ", " + str(self.__state) + ", " + str(self.__priority) + ", " + str(self.__pc) + ", " + str(self.__memory_pointers) + ", " + str(self.__context_data) + ", " + str(self.__io_status_info) + ", " + str(self.__context) )
+        return( str(self.__identifier) + ", " + str(self.__state) + ", " + str(self.__priority) + ", " + str(self.__pc) + ", " + str(self.__memory_pointers) + ", " + str(self.__context_data) + ", " + str(self.__io_status_info) + ", " + str(self.__context) )
 
     def toDict(self):
         return {"identifier": self.__identifier,

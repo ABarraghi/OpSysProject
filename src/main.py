@@ -65,6 +65,8 @@ if args.input:
     file_input = args.input
 else:
     file_input = definitions.INPUT_FILE
+#----------------------------------------------------------------------------------------------------------
+
 # round robin scheduler code
 if args.roundrobin:
     #declare the job list
@@ -77,19 +79,21 @@ if args.roundrobin:
     #while loop that completes each job one by one
     while (job_list.get_length() > 0):
         #debugging
-        print(job_list.get_length())
+        #print(job_list.get_length())
 
         #check if job is completed. if true, remove job off the job list (skip it) and declare the global time completed
         if (job_list.get_node_data_at(my_iter).getCpuTimeCompleted() >= job_list.get_node_data_at(my_iter).getCpuTimeToComplete() ):
             job_list.get_node_data_at(my_iter).setTimeCompleted(global_timer)
             
             #debugging
-            #print(job_list.get_node_data_at(my_iter).toDict())
+            print(job_list.to_string())
 
             #add my_iter to completed jobs
             dump_list.append(job_list.get_node_data_at(my_iter).toDict())
             job_list.remove_at(my_iter)
 
+            #debugging
+            print(job_list.to_string())
 
             skip_bool = True
 
@@ -116,7 +120,7 @@ if args.roundrobin:
 
             
             #debugging
-            if(job_list.get_node_data_at(my_iter).getIdentifier()==3):
+            if(job_list.get_node_data_at(my_iter).getIdentifier() in [1,2]):
                 print("Global time: " + str(global_timer))
                 print("Length: " + str(job_list.get_length()))
                 print("Iterator: " + str(my_iter))
