@@ -152,8 +152,13 @@ TIME SPENT WAITING: {job_list.get_node_data_at(my_iter).getTimeSpentWaiting()}
 
                 #job timers
                 job_list.get_node_data_at(my_iter).addCpuTimeCompleted(definitions.TIME_UNIT)
+
+                #add time spent waiting to all jobs except current job (not done yet)
                 if (job_list.get_length() != 1):    #if there is only one job in queue, don't add CST
-                    job_list.get_node_data_at(my_iter).addToTimeSpentWaiting(definitions.CST)
+                    for i in range(job_list.get_length()):
+                        job_list.get_node_data_at(i).addToTimeSpentWaiting(definitions.CST)
+                        if (i != my_iter):
+                            job_list.get_node_data_at(i).addToTimeSpentWaiting(definitions.TIME_UNIT)
 
                 #set to not running
                 job_list.get_node_data_at(my_iter).setState("not_running")
