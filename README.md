@@ -1,5 +1,5 @@
 # OpSysProject1
-Project 1 for CS 320:01 Operating Systems - 25/SP
+Project 2 for CS 320:01 Operating Systems - 25/SP
 
 # Sample usage
 ```
@@ -19,8 +19,18 @@ options:
 
 # Deliverables
 
-## Design Document
+##Project 1
+
+### Design Document
 https://livejuniata-my.sharepoint.com/:w:/g/personal/lopezal23_juniata_edu/EbOp9wMc05lIiFi3MIGH2SIBZZ2FCFTVkRrGcNxsXFIx7g?e=f7i5V9
 
-## Lab Write-Up
+### Lab Write-Up
 https://livejuniata-my.sharepoint.com/:w:/g/personal/lopezal23_juniata_edu/EWxFOuvUH8lOmk6khHdhdkoBxFX-9z1_QOoj0fcYlS_AsA?e=BPTQdi
+
+##Project 2
+
+### Design Document
+https://livejuniata-my.sharepoint.com/:w:/g/personal/barraax20_juniata_edu/EXqjWB4TNfRNmivCp-2D7PoBb7HvNCMmlt9ClmzXR5v4vw?e=gjkgI8
+
+### Lab Write-Up
+https://livejuniata-my.sharepoint.com/:w:/g/personal/barraax20_juniata_edu/ES0KXmvkt09Hl9rNgO26qskBn2sweJDkSDr4mkC2qPrVHw?e=csQZMt
