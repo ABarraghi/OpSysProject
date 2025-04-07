@@ -7,6 +7,7 @@ import json
 
 
 #include necessary header files
+from include import roundrobin
 from include import definitions
 from include import jobs
 from include.linkedlist import LinkedList
@@ -19,7 +20,7 @@ parser = argparse.ArgumentParser(description="Job scheduler simulator")
 parser.add_argument("-I", "--input", type=str, help="Use a specific json job file, default is jobs.json")
 parser.add_argument("-R", "--roundrobin", action="store_true", help="Use the round robin job scheduler")
 parser.add_argument("--realtime", action="store_true", help="Run the program in real time")
-parser.add_argument("-T", "--test", action="store_true", help="Run the test code in the program")
+parser.add_argument("-S", "--timeslice", type=int, help="Change the timeslice, type int, default: 10")
 
 # parse args
 args = parser.parse_args()
@@ -33,6 +34,18 @@ if args.roundrobin == False: #if no job scheduler is picked
     parser.error("The program requires a job scheduler to run")
 if (args.realtime and (args.roundrobin == False)): #if --realtime is used without a job scheduler
     parser.error("The --realtime argument requires a job scheduler")
+
+# Define file input
+if args.input:
+    file_input = args.input
+else:
+    file_input = definitions.INPUT_FILE
+
+# Define timeslice
+if args.timeslice:
+    timeslice = args.timeslice
+else:
+    timeslice = definitions.TIME_UNIT
 
 #----------------------------------------------------------------------------------------------------------
 
@@ -64,27 +77,13 @@ def defineJobs(file_input):
 
 #----------------------------------------------------------------------------------------------------------
 
-my_jobs = []
-dump_list = []
-job_list = None
-
-my_iter = 0
-skip_bool = False
-
-temp = None
-
-#----------------------------------------------------------------------------------------------------------
-# Define file input
-if args.input:
-    file_input = args.input
-else:
-    file_input = definitions.INPUT_FILE
-#----------------------------------------------------------------------------------------------------------
-
 # round robin scheduler code
 if args.roundrobin:
     #declare the job list
     my_jobs = defineJobs(file_input)
+
+    my_iter = 0
+    skip_bool = False
 
     #start the LinkedList
     job_list = LinkedList(my_jobs)
@@ -92,6 +91,8 @@ if args.roundrobin:
 
     #define global timer
     global_timer = job_list.get_node_data_at(0).getGlobalTimer()
+
+    ready_queue = []
 
     try:
         #while loop that completes each job one by one
@@ -104,7 +105,7 @@ if args.roundrobin:
                 job_list.get_node_data_at(my_iter).setTimeCompleted(global_timer)
 
                 #add my_iter to completed jobs
-                dump_list.append(job_list.get_node_data_at(my_iter).toDict())
+                ready_queue.append(job_list.get_node_data_at(my_iter).toDict())
                 job_list.remove_at(my_iter)
 
                 skip_bool = True
@@ -175,114 +176,30 @@ TIME SPENT WAITING: {job_list.get_node_data_at(my_iter).getTimeSpentWaiting()}
             if (job_list.get_length() == 1):
                 my_iter = 0 
             #print("Updated my_iter: " + str(my_iter))
-    except KeyboardInterrupt: #if ctrl+c is pressed
+    except KeyboardInterrupt: #if ctrl+c is pressed, save jobs to log.json
         #dump job information to log.json
-        dump_list = []
         #set global_timer
         for i in range(job_list.get_length()):
             job_list.get_node_data_at(i).setGlobalTimer(global_timer) 
 
         #turn job_list job objects into dicts and send that to dump_list, 
         for i in range(job_list.get_length()):
-            dump_list.append(job_list.get_node_data_at(i).toDict())
+            ready_queue.append(job_list.get_node_data_at(i).toDict())
 
         with open("log.json", "w") as log:
-            json.dump(dump_list, log, indent=4)
+            json.dump(ready_queue, log, indent=4)
         print("SIMULATION INTERRUPTED, CURRENT DATA WRITTEN TO LOG.JSON. EXITING PROGRAM...")
         sys.exit()
 
 
     #dump job information to log.json if program completes
-    for i in range(len(dump_list)):
-        dump_list[i]["global_timer"] = global_timer
-    temp = json.dumps(dump_list, indent=4)
+    #set global_timer
+    for i in range(len(ready_queue)):
+        ready_queue[i]["global_timer"] = global_timer
+
+    temp = json.dumps(ready_queue, indent=4)
+
     with open("log.json", "w") as log:
-        json.dump(dump_list, log, indent=4)
+        json.dump(ready_queue, log, indent=4)
     print("SIMULATION COMPLETED, CURRENT DATA WRITTEN TO LOG.JSON. EXITING PROGRAM...")
     sys.exit()
-        
-#----------------------------------------------------------------------------------------------------------
-if args.test:
-    #Testing LinkedList
-    tester = LinkedList([1,2,3,4,5])
-    tester.to_string()
-
-    tester_two = LinkedList([1])
-    tester_two.to_string()
-
-    tester_three = LinkedList([])
-    tester_three.to_string()
-
-    tester_four = LinkedList([
-            {
-                "identifier": 1,
-                "state": "not_running",
-                "priority": 0,
-                "pc": 0,
-                "memory_pointers": 0,
-                "context_data": 0,
-                "io_status_info": 0,
-                "context": {
-                    "cpu_time_to_complete": 100,
-                    "cpu_time_completed": 0,
-                    "time_entered_to_queue": 0,
-                    "time_started_on_cpu": 0,
-                    "time_spent_waiting": 0,
-                    "time_completed": 0
-                }
-            },
-            {
-                "identifier": 2,
-                "state": "not_running",
-                "priority": 0,
-                "pc": 0,
-                "memory_pointers": 0,
-                "context_data": 0,
-                "io_status_info": 0,
-                "context": {
-                    "cpu_time_to_complete": 300,
-                    "cpu_time_completed": 0,
-                    "time_entered_to_queue": 0,
-                    "time_started_on_cpu": 0,
-                    "time_spent_waiting": 0,
-                    "time_completed": 0
-                }
-            }
-    ])
-    tester_four.to_string()
-
-    tester.set_node_at(2,Node(100))
-
-    tester.to_string()
-    print(tester.get_node_at(2))
-
-    tester.set_node_data_at(2,2)
-    print(tester.get_node_data_at(2))
-    print(tester.get_node_at(2))
-
-    tester.append(Node(6))
-    tester.to_string()
-
-    print(tester.length)
-
-    tester.remove_last()
-    tester.to_string()
-
-    tester.remove_last()
-    tester.to_string()
-
-    tester.insert_at(4,Node(5))
-    tester.to_string()
-
-    print(tester.tail)
-
-    tester.remove_at(4)
-    tester.to_string()
-    #print(tester.head)
-
-    #secondtest = tester.head.next
-    #print(secondtest)
-
-
-    #testnode = Node(5)
-    #print(testnode)
