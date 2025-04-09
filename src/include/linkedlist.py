@@ -7,25 +7,53 @@ from include.node import Node
 class LinkedList:
 
     #Intitalizing by an array of Nodes
-    def __init__(self,nodeList):
+    def __init__(self):
 
         self.head = None
-        self.tail = None
-        self.length = len(nodeList)
-
-        if(self.length > 0):
-
-            self.head = Node(nodeList[0])
-            cur = self.head
-
-            for i in range(1,len(nodeList)):
-
-                cur.next = Node(nodeList[i])
-                cur = cur.next
-            
-            self.tail = cur
-            
     
+    #Insert data with no additional input    
+    def insert_at_beginning(self, data):
+        new_node = Node(data)
+        if self.head is None:
+            self.head = new_node
+            new_node.next = self.head
+        else:
+            curr = self.head
+            while curr.next != self.head:
+                curr = curr.next
+            curr.next = new_node
+            new_node.next = self.head
+            self.head = new_node
+
+    #delete where node data = input data
+    def delete(self, data):
+        if self.head is None:
+            print("List is empty!")
+            return
+        if self.head.data == data:
+            if self.head.next == self.head:
+                self.head = None
+            else:
+                curr = self.head
+                while curr.next != self.head:
+                    curr = curr.next
+                curr.next = self.head.next
+                self.head = self.head.next
+            return
+        curr = self.head
+        prev = None
+        while curr.next != self.head:
+            if curr.data == data:
+                prev.next = curr.next
+                return
+            prev = curr
+            curr = curr.next
+        if curr.data == data:
+            prev.next = curr.next
+        else:
+            print("Element not found!")
+
+
     #Go through the LL, starting from the head
     def to_string(self):
 
@@ -39,153 +67,26 @@ class LinkedList:
             print(f"Node #{counter} : ",cur)
             cur = cur.next
             counter = counter + 1
-
-    #Add Node at the end of the LinkedList
-    def append(self,node):
-
-        self.tail.next = node
-        self.tail = node
-        self.length += 1
-
-    #Remove Node at the end of the LinkedList
-    def remove_last(self):
-
-        counter = 0
-        cur = self.head
-        
-        if(self.length == 0):
-            raise IndexError("attempted removal on empty linked list")
-
-        while(counter < (self.length-2)):
-
-            cur = cur.next
-            counter += 1
-
-        cur.next = None
-        self.tail = cur
-
-        #fix to self.length going down twice on remove_at
-        if (self.length != 2):
-            self.length -= 1
     
-    #Add Node at a specified index
-    def insert_at(self,index,node):
-
-        if((index > self.length) or (index < 0)):
-            raise IndexError("chosen index is out of bounds")
-
-        counter = 0
-        target_node = self.head
-
-        #stop at the node right before specified index
-        while(counter < (index-1)):
-
-            target_node = target_node.next
-            counter += 1
-        
-        #target_node is the node prior to the one inserted
-        #after_node is the node after the one inserted
-        after_node = target_node.next
-        target_node.next = node
-        node.next = after_node
-
-        self.length += 1
-
-        #update head and tail as needed
-        if(index == 0):
-            self.head = node
-
-        if(index == (self.length-1)):
-            self.tail = node
-
-    #Remove Node at a specified index
-    def remove_at(self,index):
-
-        if((index > self.length - 1) or (index < 0)):
-            raise IndexError("chosen index is out of bounds")
-
-        counter = 0
-        target_node = self.head
-
-        #simply update head or tail, if they are the ones to be deleted
-        if(index == 0):
-            self.head = target_node.next
-
-        elif(index == (self.length-1)):
-            self.remove_last()
-            
-        else: 
-            #stop at the node right before specified index
-            while(counter < (index-1)):
-
-                target_node = target_node.next
-                counter += 1
-            
-            #target_node is the node prior to the one deleted
-            #after_node is the node after the one deleted
-            after_node = target_node.next.next
-            target_node.next = after_node
-
-        self.length -= 1
-
-
-    #All of the following functions are zero-indexed
-
-    def get_node_at(self,index):
-
-        if((index > self.length) or (index < 0)):
-            raise IndexError("chosen index is out of bounds")
-
-        counter = 0
-        target_node = self.head
-
-        while(counter < index):
-
-            target_node = target_node.next
-            counter += 1
-        
-        return target_node
-
-    def set_node_at(self,index,node):
-
-        if((index > self.length) or (index < 0)):
-            raise IndexError("chosen index is out of bounds")
-
-        counter = 0
-        target_node = self.head
-
-        #stop at the node right before specified index
-        while(counter < (index-1)):
-
-            target_node = target_node.next
-            counter += 1
-        
-        #target_node is the node prior to the one inserted
-        #replaced_node is the node that will be overriden by this method
-        replaced_node = target_node.next
-        node.next = replaced_node.next
-        target_node.next = node
-
-    def get_node_data_at(self,index):
-
-        return self.get_node_at(index).data
-
-    def set_node_data_at(self,index,data):
-
-        if((index > self.length) or (index < 0)):
-            raise IndexError("chosen index is out of bounds")
-
-        counter = 0
-        target_node = self.head
-
-        #stop at the node right before specified index
-        while(counter < (index-1)):
-
-            target_node = target_node.next
-            counter += 1
-        
-        target_node.next.data = data
-        
     #get length of linked list
     def get_length(self):
-        return self.length
+        if self.head is None:
+            return 0
+        tempnode = self.head
+        length = 0
+        while True:
+            tempnode = tempnode.next
+            length += 1
+            if(tempnode == self.head):
+                break
+        return length
+    
+    #get highest priority
+    def getMaxPriority(self):
+        max = 0
+        node = self.head
+        for i in range(self.get_length()):
+            if node.data.getPriority() > max:
+                max = node.data.getPriority()
+            node = node.next
+        return max
