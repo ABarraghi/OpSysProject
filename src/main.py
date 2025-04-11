@@ -121,9 +121,6 @@ if args.roundrobin:
                     #set to running
                     cur_node.data.setState("running")
 
-
-                    #print(job_list.getMaxPriority())
-
                     copyTimeslice = timeslice
                     #if timeslice is greater than time remaining, then add the difference instead of timeslice by temporarily setting timeslice to said difference
                     if((cur_node.data.getCpuTimeToComplete() - cur_node.data.getCpuTimeCompleted()) > timeslice):
@@ -181,12 +178,6 @@ if args.roundrobin:
                         if temp_node == cur_node:
                             break
 
-                    #if (job_list.get_length() != 1):    #if there is only one job in queue, don't add CST
-                        #   for i in range(job_list.get_length()):
-                        #      cur_node.data.addToTimeSpentWaiting(definitions.CST)
-                        #     if (i != my_iter):
-                        #        cur_node.data.addToTimeSpentWaiting(timeslice * cur_node.data.getPriority())
-
                     #reset timeslice
                     timeslice = copyTimeslice
 
@@ -196,13 +187,6 @@ if args.roundrobin:
                     #update global timer in Job object
                     for i in range(job_list.get_length()):
                         cur_node.data.setGlobalTimer(global_timer)
-
-                    #go on to the next job
-                    # my_iter += 1
-                    # if (my_iter > (job_list.get_length() - 1)):
-                    #     my_iter = 0
-                    # if (job_list.get_length() == 1):
-                    #     my_iter = 0 
                     
                     #check if job is completed. if true, remove job off the job list (skip it) and declare the global time completed
                     if (cur_node.data.getCpuTimeCompleted() >= cur_node.data.getCpuTimeToComplete() ):
@@ -215,7 +199,6 @@ if args.roundrobin:
                         job_list.delete(delteted)
 
                     cur_node = cur_node.next
-                    #print("Updated my_iter: " + str(my_iter))
 
     except KeyboardInterrupt: #if ctrl+c is pressed
         #dump job information to log.json
