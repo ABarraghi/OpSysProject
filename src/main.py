@@ -20,6 +20,7 @@ parser.add_argument("-I", "--input", type=str, help="Use a specific json job fil
 parser.add_argument("-R", "--roundrobin", action="store_true", help="Use the round robin job scheduler")
 parser.add_argument("--realtime", action="store_true", help="Run the program in real time")
 parser.add_argument("-T", "--test", action="store_true", help="Run the test code in the program")
+parser.add_argument("-S", "--timeslice", type=int, help="Change the timeslice, type int, default: 10")
 
 # parse args
 args = parser.parse_args()
@@ -79,6 +80,13 @@ if args.input:
     file_input = args.input
 else:
     file_input = definitions.INPUT_FILE
+
+
+# Define timeslice
+if args.timeslice:
+    timeslice = args.timeslice
+else:
+    timeslice = definitions.TIME_UNIT
 #----------------------------------------------------------------------------------------------------------
 
 # round robin scheduler code
@@ -98,15 +106,26 @@ if args.roundrobin:
     try:
         #while loop that completes each job one by one
         while (job_list.get_length() > 0):
-            #debugging
-            #print(job_list.get_length())
+            print(job_list.get_length())
+            print("FLAG1")
+            
             max = job_list.getMaxPriority()
             for i in reversed(range(1, max+1)):
+                print("FLAG2")
                 max = job_list.getMaxPriority()
+
                 if cur_node.data.getPriority() == i:
 
                     #set to running
                     cur_node.data.setState("running")
+
+
+                    #print(job_list.getMaxPriority())
+
+                    copyTimeslice = timeslice
+                    #if timeslice is greater than time remaining, then add the difference instead of timeslice by temporarily setting timeslice to said difference
+                    if((cur_node.data.getCpuTimeToComplete() - cur_node.data.getCpuTimeCompleted()) > timeslice):
+                        timeslice = cur_node.data.getCpuTimeToComplete() - cur_node.data.getCpuTimeCompleted()
 
                     #simulate realtime console
                     if args.realtime:
@@ -117,7 +136,7 @@ if args.roundrobin:
                         if (job_list.get_length() == 1):    #if there is only one job in queue, don't add CST
                             temp = 0
 
-                        while(temp_timer <= (definitions.TIME_UNIT + temp)):
+                        while(temp_timer <= (timeslice + temp)):
 
                             os.system('cls' if os.name == 'nt' else 'clear')
                             print(f"""
@@ -129,10 +148,11 @@ if args.roundrobin:
                             #prepare for next second
                             #time.sleep(1)
                             temp_timer += 1
-                            if (temp_timer2 + 1 <= definitions.TIME_UNIT * cur_node.data.getPriority()):
+                            if (temp_timer2 + 1 <= timeslice * cur_node.data.getPriority()):
                                 temp_timer2 += 1
                     temp_timer = 0
                     temp_timer2 = 0
+
 
                     #add CST and TIME_UNIT to global_timer and add TIME_UNIT to job_list.get_node_data_at()
                     if(cur_node.data.getTimeEnteredToQueue() == 0):
@@ -141,12 +161,12 @@ if args.roundrobin:
                         cur_node.data.setTimeStartedOnCpu(global_timer)
 
                     #global timer
-                    global_timer += definitions.TIME_UNIT * cur_node.data.getPriority()
+                    global_timer += timeslice * cur_node.data.getPriority()
                     if (job_list.get_length() != 1):    #if there is only one job in queue, don't add CST
                         global_timer += definitions.CST
 
                     #job timers
-                    cur_node.data.addCpuTimeCompleted(definitions.TIME_UNIT * cur_node.data.getPriority())
+                    cur_node.data.addCpuTimeCompleted(timeslice * cur_node.data.getPriority())
 
                     #add time spent waiting to all jobs except current job (not done yet)
                     temp_node = cur_node
@@ -154,7 +174,7 @@ if args.roundrobin:
                     while True:
                         if (job_list.get_length() != 1):
                             cur_node.data.addToTimeSpentWaiting(definitions.CST)
-                        cur_node.data.addToTimeSpentWaiting(definitions.TIME_UNIT * priority)
+                        cur_node.data.addToTimeSpentWaiting(timeslice * priority)
                         cur_node = cur_node.next
                         if temp_node == cur_node:
                             break
@@ -163,8 +183,13 @@ if args.roundrobin:
                         #   for i in range(job_list.get_length()):
                         #      cur_node.data.addToTimeSpentWaiting(definitions.CST)
                         #     if (i != my_iter):
-                        #        cur_node.data.addToTimeSpentWaiting(definitions.TIME_UNIT * cur_node.data.getPriority())
+                        #        cur_node.data.addToTimeSpentWaiting(timeslice * cur_node.data.getPriority())
 
+                    #reset timeslice
+                    timeslice = copyTimeslice
+
+
+                    print("flag1")
                     #set to not running
                     cur_node.data.setState("not_running")
 
