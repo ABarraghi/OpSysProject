@@ -49,15 +49,16 @@ def defineJobs(file_input):
     for elem in range(len(json_data)):
         temp = jobs.Job()
         #use setters
-        temp.setIdentifier(json_data[elem-1]["identifier"])
-        temp.setState(json_data[elem-1]["state"])
-        temp.setPriority(json_data[elem-1]["priority"])
-        temp.setPc(json_data[elem-1]["pc"])
-        temp.setMemoryPointers(json_data[elem-1]["memory_pointers"])
-        temp.setContextData(json_data[elem-1]["context_data"])
-        temp.setIOStatusInfo(json_data[elem-1]["io_status_info"])
-        temp.setGlobalTimer(json_data[elem-1]["global_timer"])
-        temp.setContext(json_data[elem-1]["context"])
+
+        temp.setIdentifier(json_data[elem]["identifier"])
+        temp.setState(json_data[elem]["state"])
+        temp.setPriority(json_data[elem]["priority"])
+        temp.setPc(json_data[elem]["pc"])
+        temp.setMemoryPointers(json_data[elem]["memory_pointers"])
+        temp.setContextData(json_data[elem]["context_data"])
+        temp.setIOStatusInfo(json_data[elem]["io_status_info"])
+        temp.setGlobalTimer(json_data[elem]["global_timer"])
+        temp.setContext(json_data[elem]["context"])
 
         job_list.append(temp)
 
@@ -107,11 +108,15 @@ if args.roundrobin:
         #while loop that completes each job one by one
         while (job_list.get_length() > 0):
             max = job_list.getMaxPriority() #update priority
-            print(job_list.get_length())
+
             for i in reversed(range(1, max+1)):
+                #print("cur node: ", cur_node.data.getPriority())
+                #print("i: ", i)
                 max = job_list.getMaxPriority()
                 if cur_node.data.getPriority() == i:
+
                     #never gets here
+                    print(job_list.get_length())
 
                     #set to running
                     cur_node.data.setState("running")
