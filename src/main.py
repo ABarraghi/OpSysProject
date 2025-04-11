@@ -115,9 +115,6 @@ if args.roundrobin:
                 max = job_list.getMaxPriority()
                 if cur_node.data.getPriority() == i:
 
-                    #never gets here
-                    print(job_list.get_length())
-
                     #set to running
                     cur_node.data.setState("running")
 
@@ -192,17 +189,27 @@ if args.roundrobin:
                     if (cur_node.data.getCpuTimeCompleted() >= cur_node.data.getCpuTimeToComplete() ):
                         cur_node.data.setTimeCompleted(global_timer)
 
-                        #add my_iter to completed jobs
-                        dump_list.append(cur_node.data.toDict())
-                        delteted = cur_node.data
-                        cur_node = cur_node.next
-                        job_list.delete(delteted)
+                        if job_list.get_length() > 1:
+                            #add my_iter to completed jobs
+                            #print("FLAG1: len before:", job_list.get_length())
+                            dump_list.append(cur_node.data.toDict())
+                            delteted = cur_node.data
+                            cur_node = cur_node.next
+                            job_list.delete(delteted)
+                            #print("FLAG1: len after:", job_list.get_length())
+                        if job_list.get_length() == 1:
+                            #print("FLAG2: len before", job_list.get_length())
+                            #add my_iter to completed jobs
+                            dump_list.append(cur_node.data.toDict())
+                            delteted = cur_node.data
+                            job_list.delete(delteted)
+                            #print("FLAG2: len after", job_list.get_length())
+                            break;
 
                     cur_node = cur_node.next
 
     except KeyboardInterrupt: #if ctrl+c is pressed
         #dump job information to log.json
-        dump_list = []
         #set global_timer
         for i in range(job_list.get_length()):
             cur_node.data.setGlobalTimer(global_timer) 
