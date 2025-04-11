@@ -137,9 +137,9 @@ if args.roundrobin:
                             os.system('cls' if os.name == 'nt' else 'clear')
                             print(f"""
     GLOBAL TIME: {global_timer + temp_timer}
-    JOB NUMBER: {job_list.get_node_data_at(my_iter).getIdentifier()}
-    TIMER: {job_list.get_node_data_at(my_iter).getCpuTimeCompleted() +  temp_timer2} / {job_list.get_node_data_at(my_iter).getCpuTimeToComplete()}
-    TIME SPENT WAITING: {job_list.get_node_data_at(my_iter).getTimeSpentWaiting()}
+    JOB NUMBER: {cur_node.data.getIdentifier()}
+    TIMER: {cur_node.data.getCpuTimeCompleted() +  temp_timer2} / {cur_node.data.getCpuTimeToComplete()}
+    TIME SPENT WAITING: {cur_node.data.getTimeSpentWaiting()}
     """, end='\r')
                             #prepare for next second
                             #time.sleep(1)
