@@ -110,6 +110,7 @@ if args.roundrobin:
             max = job_list.getMaxPriority() #update priority
 
             for i in reversed(range(1, max+1)):
+                remainder = 0
                 #print("cur node: ", cur_node.data.getPriority())
                 #print("i: ", i)
                 max = job_list.getMaxPriority()
@@ -120,7 +121,8 @@ if args.roundrobin:
 
                     copyTimeslice = timeslice
                     #if timeslice is greater than time remaining, then add the difference instead of timeslice by temporarily setting timeslice to said difference
-                    if((cur_node.data.getCpuTimeToComplete() - cur_node.data.getCpuTimeCompleted()) > timeslice):
+                    if((cur_node.data.getCpuTimeToComplete() - cur_node.data.getCpuTimeCompleted()) < timeslice):
+                        remainder = timeslice - (cur_node.data.getCpuTimeToComplete() - cur_node.data.getCpuTimeCompleted())
                         timeslice = cur_node.data.getCpuTimeToComplete() - cur_node.data.getCpuTimeCompleted()
 
                     #simulate realtime console
@@ -175,8 +177,8 @@ if args.roundrobin:
                         if temp_node == cur_node:
                             break
 
-                    #reset timeslice
-                    timeslice = copyTimeslice
+                    #reset timeslice, adding the remainder
+                    timeslice = copyTimeslice + remainder
 
                     #set to not running
                     cur_node.data.setState("not_running")
