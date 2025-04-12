@@ -7,14 +7,14 @@
         "memory_pointers": 0,
         "context_data": 0,
         "io_status_info": 0,
-        "global_timer": 2004,
+        "global_timer": 1004,
         "context": {
             "cpu_time_to_complete": 400,
-            "cpu_time_completed": 500,
+            "cpu_time_completed": 400,
             "time_entered_to_queue": 0,
             "time_started_on_cpu": 0,
-            "time_spent_waiting": 501,
-            "time_completed": 501
+            "time_spent_waiting": 401,
+            "time_completed": 401
         }
     },
     {
@@ -25,14 +25,14 @@
         "memory_pointers": 0,
         "context_data": 0,
         "io_status_info": 0,
-        "global_timer": 2004,
+        "global_timer": 1004,
         "context": {
             "cpu_time_to_complete": 200,
-            "cpu_time_completed": 500,
-            "time_entered_to_queue": 501,
-            "time_started_on_cpu": 501,
-            "time_spent_waiting": 1002,
-            "time_completed": 1002
+            "cpu_time_completed": 200,
+            "time_entered_to_queue": 401,
+            "time_started_on_cpu": 401,
+            "time_spent_waiting": 602,
+            "time_completed": 602
         }
     },
     {
@@ -43,14 +43,14 @@
         "memory_pointers": 0,
         "context_data": 0,
         "io_status_info": 0,
-        "global_timer": 2004,
+        "global_timer": 1004,
         "context": {
             "cpu_time_to_complete": 100,
-            "cpu_time_completed": 500,
-            "time_entered_to_queue": 1002,
-            "time_started_on_cpu": 1002,
-            "time_spent_waiting": 1503,
-            "time_completed": 1503
+            "cpu_time_completed": 100,
+            "time_entered_to_queue": 602,
+            "time_started_on_cpu": 602,
+            "time_spent_waiting": 703,
+            "time_completed": 703
         }
     },
     {
@@ -61,14 +61,14 @@
         "memory_pointers": 0,
         "context_data": 0,
         "io_status_info": 0,
-        "global_timer": 2004,
+        "global_timer": 1004,
         "context": {
             "cpu_time_to_complete": 300,
-            "cpu_time_completed": 500,
-            "time_entered_to_queue": 1503,
-            "time_started_on_cpu": 1503,
-            "time_spent_waiting": 2004,
-            "time_completed": 2004
+            "cpu_time_completed": 300,
+            "time_entered_to_queue": 703,
+            "time_started_on_cpu": 703,
+            "time_spent_waiting": 1004,
+            "time_completed": 1004
         }
     },
     {
@@ -79,13 +79,13 @@
         "memory_pointers": 0,
         "context_data": 0,
         "io_status_info": 0,
-        "global_timer": 2004,
+        "global_timer": 1004,
         "context": {
             "cpu_time_to_complete": 100,
             "cpu_time_completed": 0,
             "time_entered_to_queue": 0,
             "time_started_on_cpu": 0,
-            "time_spent_waiting": 2004,
+            "time_spent_waiting": 1004,
             "time_completed": 0
         }
     }

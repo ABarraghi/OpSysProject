@@ -11,10 +11,10 @@
         "context": {
             "cpu_time_to_complete": 100,
             "cpu_time_completed": 100,
-            "time_entered_to_queue": 201,
-            "time_started_on_cpu": 201,
-            "time_spent_waiting": 302,
-            "time_completed": 302
+            "time_entered_to_queue": 251,
+            "time_started_on_cpu": 251,
+            "time_spent_waiting": 352,
+            "time_completed": 352
         }
     },
     {
@@ -29,10 +29,10 @@
         "context": {
             "cpu_time_to_complete": 300,
             "cpu_time_completed": 300,
-            "time_entered_to_queue": 302,
-            "time_started_on_cpu": 302,
-            "time_spent_waiting": 603,
-            "time_completed": 603
+            "time_entered_to_queue": 352,
+            "time_started_on_cpu": 352,
+            "time_spent_waiting": 653,
+            "time_completed": 653
         }
     },
     {
@@ -47,8 +47,8 @@
         "context": {
             "cpu_time_to_complete": 400,
             "cpu_time_completed": 400,
-            "time_entered_to_queue": 603,
-            "time_started_on_cpu": 603,
+            "time_entered_to_queue": 653,
+            "time_started_on_cpu": 653,
             "time_spent_waiting": 804,
             "time_completed": 804
         }
