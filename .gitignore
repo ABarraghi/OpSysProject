@@ -3,3 +3,8 @@ src/include/__pycache__
 
 #ignore log.json
 src/log.json
+
+#others to ignore
+.DS_Store
+src/.DS_Store
+.vscode/settings.json
