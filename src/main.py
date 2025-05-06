@@ -70,9 +70,6 @@ my_jobs = []
 dump_list = []
 job_list = LinkedList()
 
-my_iter = 0
-skip_bool = False
-
 temp = None
 
 #----------------------------------------------------------------------------------------------------------
@@ -109,45 +106,38 @@ if args.roundrobin:
         while (job_list.get_length() > 0):
             max = job_list.getMaxPriority() #update priority
 
-            for i in reversed(range(1, max+1)):
-                remainder = 0
-                #print("cur node: ", cur_node.data.getPriority())
-                #print("i: ", i)
-                max = job_list.getMaxPriority()
-                if cur_node.data.getPriority() == i:
+            if cur_node.data.getPriority() == max:
+                #set to running
+                cur_node.data.setState("running")
 
-                    #set to running
-                    cur_node.data.setState("running")
+                copyTimeslice = timeslice
+                #if timeslice is greater than time remaining, then add the difference instead of timeslice by temporarily setting timeslice to said difference
+                if((cur_node.data.getCpuTimeToComplete() - cur_node.data.getCpuTimeCompleted()) < timeslice):
+                    timeslice = cur_node.data.getCpuTimeToComplete() - cur_node.data.getCpuTimeCompleted()
 
-                    copyTimeslice = timeslice
-                    #if timeslice is greater than time remaining, then add the difference instead of timeslice by temporarily setting timeslice to said difference
-                    if((cur_node.data.getCpuTimeToComplete() - cur_node.data.getCpuTimeCompleted()) < timeslice):
-                        remainder = timeslice - (cur_node.data.getCpuTimeToComplete() - cur_node.data.getCpuTimeCompleted())
-                        timeslice = cur_node.data.getCpuTimeToComplete() - cur_node.data.getCpuTimeCompleted()
-
-                    #simulate realtime console
-                    if args.realtime:
-                        temp_timer = 0 #tracks both definitions of time
-                        temp_timer2 = 0 #tracks only TIME_UNIT
+                #simulate realtime console
+                if args.realtime:
+                    temp_timer = 0 #tracks both definitions of time
+                    temp_timer2 = 0 #tracks only TIME_UNIT
                     
-                        temp = definitions.CST
-                        if (job_list.get_length() == 1):    #if there is only one job in queue, don't add CST
-                            temp = 0
+                    temp = definitions.CST
+                    if (job_list.get_length() == 1):    #if there is only one job in queue, don't add CST
+                        temp = 0
 
-                        while(temp_timer <= (timeslice + temp)):
+                    while(temp_timer <= (timeslice + temp)):
 
-                            os.system('cls' if os.name == 'nt' else 'clear')
-                            print(f"""
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        print(f"""
     GLOBAL TIME: {global_timer + temp_timer}
     JOB NUMBER: {cur_node.data.getIdentifier()}
     TIMER: {cur_node.data.getCpuTimeCompleted() +  temp_timer2} / {cur_node.data.getCpuTimeToComplete()}
     TIME SPENT WAITING: {cur_node.data.getTimeSpentWaiting()}
     """, end='\r')
-                            #prepare for next second
-                            #time.sleep(1)
-                            temp_timer += 1
-                            if (temp_timer2 + 1 <= timeslice * cur_node.data.getPriority()):
-                                temp_timer2 += 1
+                        #prepare for next second
+                        #time.sleep(1)
+                        temp_timer += 1
+                        if (temp_timer2 + 1 <= timeslice):
+                            temp_timer2 += 1
                     temp_timer = 0
                     temp_timer2 = 0
 
@@ -159,26 +149,25 @@ if args.roundrobin:
                         cur_node.data.setTimeStartedOnCpu(global_timer)
 
                     #global timer
-                    global_timer += timeslice * cur_node.data.getPriority()
+                    global_timer += timeslice
                     if (job_list.get_length() != 1):    #if there is only one job in queue, don't add CST
                         global_timer += definitions.CST
 
                     #job timers
-                    cur_node.data.addCpuTimeCompleted(timeslice * cur_node.data.getPriority())
+                    cur_node.data.addCpuTimeCompleted(timeslice)
 
                     #add time spent waiting to all jobs except current job (not done yet)
                     temp_node = cur_node
-                    priority = cur_node.data.getPriority()
                     while True:
                         if (job_list.get_length() != 1):
                             cur_node.data.addToTimeSpentWaiting(definitions.CST)
-                        cur_node.data.addToTimeSpentWaiting(timeslice * priority)
+                        cur_node.data.addToTimeSpentWaiting(timeslice)
                         cur_node = cur_node.next
                         if temp_node == cur_node:
                             break
 
-                    #reset timeslice, adding the remainder
-                    timeslice = copyTimeslice + remainder
+                    #reset timeslice
+                    timeslice = copyTimeslice
 
                     #set to not running
                     cur_node.data.setState("not_running")
@@ -191,24 +180,14 @@ if args.roundrobin:
                     if (cur_node.data.getCpuTimeCompleted() >= cur_node.data.getCpuTimeToComplete() ):
                         cur_node.data.setTimeCompleted(global_timer)
 
-                        if job_list.get_length() > 1:
-                            #add my_iter to completed jobs
-                            #print("FLAG1: len before:", job_list.get_length())
-                            dump_list.append(cur_node.data.toDict())
-                            delteted = cur_node.data
-                            cur_node = cur_node.next
-                            job_list.delete(delteted)
-                            #print("FLAG1: len after:", job_list.get_length())
-                        if job_list.get_length() == 1:
-                            #print("FLAG2: len before", job_list.get_length())
-                            #add my_iter to completed jobs
-                            dump_list.append(cur_node.data.toDict())
-                            delteted = cur_node.data
-                            job_list.delete(delteted)
-                            #print("FLAG2: len after", job_list.get_length())
-                            break;
+                        dump_list.append(cur_node.data.toDict())
+                        delteted = cur_node.data
+                        cur_node = cur_node.next
+                        job_list.delete(delteted)
+                        #print("FLAG1: len after:", job_list.get_length())
 
-                    cur_node = cur_node.next
+            cur_node = cur_node.next
+                    
 
     except KeyboardInterrupt: #if ctrl+c is pressed
         #dump job information to log.json
