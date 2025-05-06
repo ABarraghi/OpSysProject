@@ -11,6 +11,7 @@ class Job:
         self.__io_status_info = None
         self.__global_timer = 0
         self.__context = {}
+        self.__feedback_progress = 0
 
     #setters
 
@@ -126,3 +127,14 @@ class Job:
                 "io_status_info" : self.__io_status_info,
                 "global_timer" : self.__global_timer,
                 "context" : self.__context}
+        
+    def feedbackUpdate(self):
+        self.__feedback_progress += 1
+        if (self.__feedback_progress < 4):
+            self.__priority = 0
+        elif (self.__feedback_progress < 8):
+            self.__priority = 1
+        elif (self.__feedback_progress < 12):
+            self.__priority = 2
+        else:
+            self.__priority = 3
