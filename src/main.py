@@ -109,6 +109,7 @@ if args.roundrobin:
             if cur_node.data.getPriority() == max:
                 #set to running
                 cur_node.data.setState("running")
+                cur_node.data.feedbackUpdate()
 
                 copyTimeslice = timeslice
                 #if timeslice is greater than time remaining, then add the difference instead of timeslice by temporarily setting timeslice to said difference
