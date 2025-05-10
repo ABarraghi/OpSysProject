@@ -1,5 +1,5 @@
-# OpSysProject1
-Project 2 for CS 320:01 Operating Systems - 25/SP
+# OpSysProject
+RAJA group's project for CS 320:01 Operating Systems - 25/SP
 
 # Sample usage
 ```
