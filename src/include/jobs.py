@@ -11,7 +11,7 @@ class Job:
         self.__io_status_info = None
         self.__global_timer = 0
         self.__context = {}
-        self.__feedback_progress = 0
+        self.__feedback_progress = 1
 
     #setters
 
@@ -64,6 +64,9 @@ class Job:
 
     def setTimeCompleted(self, time_completed):
         self.__context["time_completed"] = time_completed
+    
+    def setFeedbackProgress(self, feedback_progress):
+        self.__context["feedback_progress"] = feedback_progress
 
     #getters
 
@@ -93,6 +96,9 @@ class Job:
 
     def getContext(self):
         return self.__context
+    
+    def getFeedbackProgress(self):
+        return self.__feedback_progress
     
     #getters for the context dictionary
     def getCpuTimeCompleted(self):
@@ -130,11 +136,3 @@ class Job:
         
     def feedbackUpdate(self):
         self.__feedback_progress += 1
-        if (self.__feedback_progress < 4):
-            self.__priority = 0
-        elif (self.__feedback_progress < 8):
-            self.__priority = 1
-        elif (self.__feedback_progress < 12):
-            self.__priority = 2
-        else:
-            self.__priority = 3

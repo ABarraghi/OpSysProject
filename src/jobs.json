@@ -20,7 +20,7 @@
     {
         "identifier": 2,
         "state": "not_running",
-        "priority": 2,
+        "priority": 1,
         "pc": 0,
         "memory_pointers": 0,
         "context_data": 0,
@@ -38,7 +38,7 @@
     {
         "identifier": 3,
         "state": "not_running",
-        "priority": 2,
+        "priority": 1,
         "pc": 0,
         "memory_pointers": 0,
         "context_data": 0,
@@ -56,7 +56,7 @@
     {
         "identifier": 4,
         "state": "not_running",
-        "priority": 2,
+        "priority": 1,
         "pc": 0,
         "memory_pointers": 0,
         "context_data": 0,
@@ -74,7 +74,7 @@
     {
         "identifier": 5,
         "state": "not_running",
-        "priority": 3,
+        "priority": 1,
         "pc": 0,
         "memory_pointers": 0,
         "context_data": 0,

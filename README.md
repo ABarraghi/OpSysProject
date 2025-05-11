@@ -17,6 +17,7 @@ options:
   -T, --test            Run the test code in the program
   -S TIMESLICE, --timeslice TIMESLICE
                         Change the timeslice, type int, default: 10
+  -F, --feedback        Use the feedback job scheduler
  ```
 
 # Deliverables

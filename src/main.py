@@ -21,6 +21,7 @@ parser.add_argument("-R", "--roundrobin", action="store_true", help="Use the rou
 parser.add_argument("--realtime", action="store_true", help="Run the program in real time")
 parser.add_argument("-T", "--test", action="store_true", help="Run the test code in the program")
 parser.add_argument("-S", "--timeslice", type=int, help="Change the timeslice, type int, default: 10")
+parser.add_argument("-F", "--feedback", action="store_true", help="Use the feedback job scheduler")
 
 # parse args
 args = parser.parse_args()
@@ -30,9 +31,9 @@ if (args.input and (not os.path.exists(args.input)) ): #if input file does not e
     parser.error("--input file does not exist")
 elif (args.input and (not args.input.lower().endswith(".json"))) : #if filename is not json
     parser.error("The program only accepts json file types")
-if args.roundrobin == False: #if no job scheduler is picked
+if (args.roundrobin == False) and (args.feedback == False): #if no job scheduler is picked
     parser.error("The program requires a job scheduler to run")
-if (args.realtime and (args.roundrobin == False)): #if --realtime is used without a job scheduler
+if (args.realtime and ((args.roundrobin == False) and (args.feedback == False))): #if --realtime is used without a job scheduler
     parser.error("The --realtime argument requires a job scheduler")
 
 #----------------------------------------------------------------------------------------------------------
@@ -88,7 +89,7 @@ else:
 #----------------------------------------------------------------------------------------------------------
 
 # round robin scheduler code
-if args.roundrobin:
+if (args.roundrobin or args.feedback):
     #declare the job list
     my_jobs = defineJobs(file_input)
 
@@ -109,7 +110,9 @@ if args.roundrobin:
             if cur_node.data.getPriority() == max:
                 #set to running
                 cur_node.data.setState("running")
-                cur_node.data.feedbackUpdate()
+                if args.feedback:
+                    timeslice *= cur_node.data.getFeedbackProgress()
+                    cur_node.data.feedbackUpdate()
 
                 copyTimeslice = timeslice
                 #if timeslice is greater than time remaining, then add the difference instead of timeslice by temporarily setting timeslice to said difference
